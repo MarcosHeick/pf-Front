@@ -1,4 +1,5 @@
 import { CONSTANTES } from "./constantes";
+import swal from "sweetalert";
 
 const initialState = {
   productsAll: [],
@@ -17,7 +18,15 @@ const initialState = {
   user: localStorage.getItem("user")
     ? JSON.parse(localStorage.getItem("user"))
     : {},
+
+  orders: [],
   users: [],
+
+  favorite: localStorage.getItem("favorite")
+    ? JSON.parse(localStorage.getItem("favorite"))
+    : [],
+  favoriteTotalItems:
+    JSON.parse(localStorage.getItem("favoriteTotalItems")) || 0,
 };
 
 function setInLocalStorage(key, state) {
@@ -242,6 +251,39 @@ export default function reducer(state = initialState, { payload, type }) {
         ...state,
       };
 
+    case "ADD_TO_FAVORITE":
+      const productFav = state.productsAll.find((ele) => ele.id === payload);
+      // const itemExist = state.cart.find((ele) => ele.id === product.id);
+
+      let newFav = [...state.favorite, { ...productFav }];
+
+      return {
+        ...state,
+        favorite: setInLocalStorage("favorite", newFav),
+        favoriteTotalItems: setInLocalStorage(
+          "favoriteTotalItems",
+          state.favorite.length + 1
+        ),
+      };
+
+    case "DELETE_ONE_FAVORITE":
+      const productFavDelete = state.productsAll.find(
+        (ele) => ele.id === payload
+      );
+      let newfavoriteList = state.favorite.filter(
+        (element) => element.id !== productFavDelete.id
+      );
+      // const itemExist = state.cart.find((ele) => ele.id === product.id);
+
+      return {
+        ...state,
+        favorite: setInLocalStorage("favorite", newfavoriteList),
+        favoriteTotalItems: setInLocalStorage(
+          "favoriteTotalItems",
+          state.favorite.length - 1
+        ),
+      };
+
     case "SEARCH_USER_FOR_NAME":
       let users = state.users;
       let filterForName = users.filter(
@@ -270,6 +312,14 @@ export default function reducer(state = initialState, { payload, type }) {
         ...state,
         user: a[0],
       };
+
+    //------------ORDERS-----------------
+    case CONSTANTES.GET_ODERS:
+      return {
+        ...state,
+        orders: payload,
+      };
+
     default:
       return { ...state };
   }

@@ -127,7 +127,30 @@ export function clearCart() {
     type: CONSTANTES.CLEAR_CART,
   };
 }
+//-------------------------//
 
+//----------favorito-----------//
+
+export function addToFavorite(payload) {
+  return {
+    type: "ADD_TO_FAVORITE",
+    payload,
+  };
+}
+export function removeOneProductFavorite(id) {
+  return {
+    type: "DELETE_ONE_FAVORITE",
+    payload: id,
+  };
+}
+export function removeAllFavorite(id) {
+  return {
+    type: "DELETE_ALL_FAVORITE",
+    payload: id,
+  };
+}
+
+//------------------------------//
 export function desmontarDetalle() {
   return {
     type: CONSTANTES.DESMONTAR_DETALLE,
@@ -152,7 +175,10 @@ export function postProducts(payload) {
   console.log(payload, " payload de postProducts");
 
   return async function (dispatch) {
-    const postJson = await axios.post(`http://localhost:3001/product`, payload);
+    const postJson = await axios.post(
+      `https://velvet.up.railway.app/product`,
+      payload
+    );
     return dispatch({
       type: CONSTANTES.POST_PRODUCT,
       payload: postJson,
@@ -166,7 +192,9 @@ export function postImages() {
   // console.log(payload, ' payload de post imagenes');
 
   return async function (dispatch) {
-    const postJson1 = await axios.post(`http://localhost:3001/product/images`);
+    const postJson1 = await axios.post(
+      `https://velvet.up.railway.app/product/images`
+    );
     return dispatch({
       type: CONSTANTES.POST_IMAGES,
     });
@@ -176,18 +204,124 @@ export function postImages() {
 //-------------LOGIN------------------//
 export function login(payload) {
   console.log(payload, "loginnnnn");
+  console.log(payload.googleId);
+  if (!payload.googleId) {
+    return async function (dispatch) {
+      const user = await axios.post(
+        "https://velvet.up.railway.app/login",
+        payload
+      );
+      console.log(user, "hola");
+      // console.log("login respuesta", respuesta.data);
+      if (user.data[1]) {
+        localStorage.setItem("token", user.data);
+        // Para logout localStorage.removeItem("token");
+      }
+
+      if (user.data.hasOwnProperty("menssage")) {
+        return swal({
+          title: "Usuario y/o password son incorrectos",
+          icon: "error",
+        });
+      }
+      if (user.data[0].role == "admin") {
+        // console.log(user[0], "users admin");
+
+        swal({
+          title: "Bienvenido ADMIN",
+          icon: "success",
+        });
+        return dispatch({
+          type: "LOGIN",
+          payload: {
+            role: user.data[0].role,
+            email: user.data[0].email,
+            id: user.data[0].id,
+            userName: user.data[0].userName,
+            Token: user.data[1].token,
+          },
+        });
+      }
+      swal({
+        title: "Ingreasaste correctamente",
+        icon: "success",
+      });
+      return dispatch({
+        type: "LOGIN",
+        payload: {
+          role: user.data[0].role,
+          email: user.data[0].email,
+          id: user.data[0].id,
+          userName: user.data[0].userName,
+          Token: user.data[1].token,
+        },
+      });
+    };
+  } else {
+    return async function (dispatch) {
+      const user = await axios.post(
+        "https://velvet.up.railway.app/users",
+        payload
+      );
+      if (user.data[1]) {
+        localStorage.setItem("token", user.data);
+        // Para logout localStorage.removeItem("token");
+      }
+
+      if (user.data.hasOwnProperty("menssage")) {
+        return swal({
+          title: "Usuario y/o password son incorrectos",
+          icon: "error",
+        });
+      }
+      if (user.data[0].role == "admin") {
+        // console.log(user[0], "users admin");
+
+        swal({
+          title: "Bienvenido ADMIN",
+          icon: "success",
+        });
+        return dispatch({
+          type: "LOGIN",
+          payload: {
+            role: user.data[0].role,
+            email: user.data[0].email,
+            id: user.data[0].id,
+            userName: user.data[0].userName,
+            Token: user.data[1].token,
+          },
+        });
+      }
+      swal({
+        title: "Ingreasaste correctamente",
+        icon: "success",
+      });
+      return dispatch({
+        type: "LOGIN",
+        payload: {
+          role: user.data[0].role,
+          email: user.data[0].email,
+          id: user.data[0].id,
+          userName: user.data[0].userName,
+          Token: user.data[1].token,
+        },
+      });
+    };
+  }
+}
+
+export function creatAcount(payload) {
+  console.log(payload, "creandoooo");
   return async function (dispatch) {
     const user = await axios.post(
-      "https://velvet.up.railway.app/login",
+      "https://velvet.up.railway.app/users",
       payload
     );
-    console.log(user, "hola")
-   // console.log("login respuesta", respuesta.data);
+
     if (user.data[1]) {
       localStorage.setItem("token", user.data);
       // Para logout localStorage.removeItem("token");
     }
- 
 
     if (user.data.hasOwnProperty("menssage")) {
       return swal({
@@ -197,47 +331,36 @@ export function login(payload) {
     }
     if (user.data[0].role == "admin") {
       // console.log(user[0], "users admin");
-   
+
       swal({
         title: "Bienvenido ADMIN",
         icon: "success",
       });
-      return dispatch({ type: "LOGIN", payload: {role:user.data[0].role,email:user.data[0].email,id:user.data[0].id,userName:user.data[0].userName,Token:user.data[1].token} });
+      return dispatch({
+        type: "LOGIN",
+        payload: {
+          role: user.data[0].role,
+          email: user.data[0].email,
+          id: user.data[0].id,
+          userName: user.data[0].userName,
+          Token: user.data[1].token,
+        },
+      });
     }
     swal({
       title: "Ingreasaste correctamente",
       icon: "success",
     });
-     return dispatch({ type: "LOGIN", payload: {role:user.data[0].role,email:user.data[0].email,id:user.data[0].id,userName:user.data[0].userName,Token:user.data[1].token} });
-  };
-}
-export function creatAcount(payload) {
-  console.log(payload, "creandoooo");
-  return async function (dispatch) {
-    const respuesta = await axios.post(
-      "https://velvet.up.railway.app/users",
-      payload
-    );
-
-    console.log(respuesta, "ress create");
-    if (respuesta.data == "email ya registrado")
-      return swal({
-        title: "Email ya registrado",
-        icon: "error",
-      });
-    const users = await axios("https://velvet.up.railway.app/users", {
-      headers: {
-        authorization: `Bearer ${localStorage.getItem("token")}`,
+    return dispatch({
+      type: "LOGIN",
+      payload: {
+        role: user.data[0].role,
+        email: user.data[0].email,
+        id: user.data[0].id,
+        userName: user.data[0].userName,
+        Token: user.data[1].token,
       },
     });
-    const user = users.data.filter(
-      (element) => element.userName === payload.userName
-    );
-    swal({
-      title: "Usuario crado correctamente",
-      icon: "success",
-    });
-    return dispatch({ type: "LOGIN", payload: user[0] });
   };
 }
 
@@ -248,7 +371,6 @@ export function clearUser(payload) {
   });
   return { type: "CLEAR_USER", payload };
 }
-
 //---------------------Usuarios---------------------//
 
 export const searchUserLocal = (name) => {
@@ -302,3 +424,41 @@ export const getUserId = (id) => {
     payload: id,
   };
 };
+
+//-------------ORDERS--------------------
+
+export const changeStatus = (payload, order_id) => {
+  console.log(payload, "<--PAYLOAD", order_id, "<----NUMERO DE ORDEN");
+  return async (dispatch) => {
+    dispatch();
+    let cambiar = await axios.put(
+      `https://velvet.up.railway.app/order/${order_id}`,
+      { payload }
+    );
+    console.log(cambiar);
+    return dispatch();
+  };
+};
+
+export const getOrders = (payload) => {
+  return async (dispatch) => {
+    let traerPedidos = await axios.get(`https://velvet.up.railway.app/order`);
+    console.log(traerPedidos);
+
+    return dispatch({
+      type: CONSTANTES.GET_ODERS,
+      payload: traerPedidos.data,
+    });
+  };
+};
+
+// export function getProducts() {
+//   return async function (dispatch) {
+//     try {
+//       const data = (await axios(datosdeploy)).data;
+//       return dispatch({ type: "GET_PRODUCTS", payload: data });
+//     } catch (error) {
+//       console.log(error, "error en la ruta principal");
+//     }
+//   };
+// }
