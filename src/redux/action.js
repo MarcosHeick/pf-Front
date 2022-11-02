@@ -204,7 +204,7 @@ export function postImages() {
 //-------------LOGIN------------------//
 export function login(payload) {
   console.log(payload, "loginnnnn");
-  console.log(payload.googleId);
+  console.log(payload.password);
   if (!payload.googleId) {
     return async function (dispatch) {
       const user = await axios.post(
@@ -289,6 +289,7 @@ export function login(payload) {
             id: user.data[0].id,
             userName: user.data[0].userName,
             Token: user.data[1].token,
+            
           },
         });
       }
