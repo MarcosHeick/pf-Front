@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
-import { GetDetail, desmontarDetalle } from "../../redux/action";
+import { getDetail, desmontarDetalle } from "../../redux/action";
 import style from "../Detail/Detail.module.css";
 import Footer from "../Footer/Footer";
 import { MdOutlineShoppingCart } from "react-icons/md";
@@ -13,12 +13,23 @@ import { Carousel } from "flowbite-react";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import NavBar from "../NavBar/NavBar";
 import { addToCart } from "../../redux/action";
+import Review from "../Review/Review";
+import Reviews from "../Review/Reviews";
 
 export default function ProductDetail() {
   const dispatch = useDispatch();
   const { id } = useParams();
   const IdProduct = useSelector((state) => state.detailProduct);
   const productsAll = useSelector((state) => state.productsAll);
+  const IdUser = useSelector((state) => state.user);
+  const [imageProduct, setImageProduct] = useState("");
+
+  function handelChangueImagens(e) {
+    e.preventDefault();
+    setImageProduct(e.target.src);
+  }
+  // console.log(IdUser.id,'PROBANMDO ID USER');
+
   const dispath = useDispatch();
   const addCart = (id) => {
     console.log(id);
@@ -28,7 +39,7 @@ export default function ProductDetail() {
   const [state, setState] = useState(true);
 
   useEffect(() => {
-    dispatch(GetDetail(id)).then(() => setState(false));
+    dispatch(getDetail(id)).then(() => setState(false));
     return () => {
       dispatch(desmontarDetalle());
     };
@@ -48,20 +59,41 @@ export default function ProductDetail() {
         <div className={style.contentImages}>
           <div className={style.images}>
             <button>
-              <img src={IdProduct[0].images[0].img} alt="img no fount" />
+              <img
+                src={IdProduct[0].mainImage}
+                alt=""
+                onClick={(e) => handelChangueImagens(e)}
+              />
+              <img
+                src={IdProduct[0].images[0]}
+                alt="img no fount"
+                onClick={(e) => handelChangueImagens(e)}
+              />
             </button>
             <button>
-              <img src={IdProduct[0].images[0].img} alt="img no fount" />
+              <img
+                src={IdProduct[0].images[1]}
+                alt="img no fount"
+                onClick={(e) => handelChangueImagens(e)}
+              />
             </button>
             <button>
-              <img src={IdProduct[0].images[0].img} alt="img no fount" />
+              <img
+                src={IdProduct[0].images[2]}
+                alt="img no fount"
+                onClick={(e) => handelChangueImagens(e)}
+              />
             </button>
             <button>
-              <img src={IdProduct[0].images[0].img} alt="img no fount" />
+              <img
+                src={IdProduct[0].images[3]}
+                alt="img no fount"
+                onClick={(e) => handelChangueImagens(e)}
+              />
             </button>
           </div>
           <img
-            src={IdProduct[0].images[0].img}
+            src={imageProduct == "" ? IdProduct[0].mainImage : imageProduct}
             alt="img no fount"
             className={style.imageP}
           />
@@ -72,14 +104,24 @@ export default function ProductDetail() {
             <AiOutlineHeart className={style.like} size="30px" />
           </div>
           <h2 className={style.title}> {IdProduct[0].name}</h2>
-          <span className={style.price}> ${IdProduct[0].price}</span>
-          <h3 className={style.stock}>Stock: {IdProduct[0].stock}</h3>
+          <span className={style.price}> $USD {IdProduct[0].price}</span>
+          {/* <h3 className={style.stock}>Stock: {IdProduct[0].stock}</h3> */}
           <h3 className={style.description}>{IdProduct[0].description}</h3>
           <h3>
-            <b>Category:</b> {IdProduct[0].category}
+            <b>Category:</b> {IdProduct[0].categories.map((e) => e.name)}
           </h3>
           <div className={style.buyCarrito}>
-            <button className={style.buy}>Comparar ya</button>
+            <div>
+              <button
+                className={IdUser.role == "inactive" ? style.buyNo : style.buy}
+              >
+                Comparar ya
+              </button>
+              {IdUser.role == "inactive" ? (
+                <p>Debes confirmar tu correo para comprar</p>
+              ) : null}
+            </div>
+
             <MdOutlineShoppingCart
               className={style.carrito}
               size="40px"
@@ -89,6 +131,9 @@ export default function ProductDetail() {
         </div>
       </div>
 
+      <Review IdProduct={IdProduct} IdUser={IdUser}></Review>
+
+      <Reviews IdProduct={IdProduct}></Reviews>
       {/* <div className={style.contentRealciones}>
         <div className="h-56  sm:h-1/2  xl:h-screen  w-full mt-20 2xl:h-96">
           <h3 className={style.titleCarrusel}>Productos Relacionados</h3>
