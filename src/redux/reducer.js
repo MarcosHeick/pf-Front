@@ -1,7 +1,7 @@
 import { CONSTANTES } from "./constantes";
 import swal from "sweetalert";
 
-const initialState = {
+export const initialState = {
   productsAll: [],
   filterProducts: [],
   detailProduct: {},
