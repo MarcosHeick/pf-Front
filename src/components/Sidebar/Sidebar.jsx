@@ -19,7 +19,7 @@ import { useDispatch, useSelector } from "react-redux";
 // import { FiMinusCircle } from "react-icons/fi";
 import { FiSearch } from "react-icons/fi";
 import { Dropdown } from "flowbite-react";
-import { Error401 } from "../Error401/Error401";
+import Error401 from "../Error401/Error401";
 const Sidebar = () => {
   const dispach = useDispatch();
   const user = useSelector((state) => state.user);
