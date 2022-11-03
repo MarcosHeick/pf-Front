@@ -8,7 +8,7 @@ const clientId = process.env.REACT_APP_GOOGLE_CLIENT_ID;
 const CreateAccountAndLoginWithGoogle = ({ text }) => {
   const dispatch = useDispatch();
   const onSuccess = (res) => {
-   // console.log("Login Success: currentUser:", res.profileObj);
+    console.log("Login Success: currentUser:", res.profileObj);
     // Obtenemos el email, el name y el id de google
     const { email, givenName, familyName, googleId, imageUrl } = res.profileObj;
     // Creamos un objeto con los datos que necesitamos
@@ -19,11 +19,10 @@ const CreateAccountAndLoginWithGoogle = ({ text }) => {
       googleId: true,
       role: "active",
       //   password: googleId, // Esto no es bueno. Pero es lo que hay
-      
     };
     // Llamamos a la action que nos permite crear un usuario si el text es "Crear cuenta"
     if (text === "Crear con Google") {
-      dispatch(login(data));
+      dispatch(creatAcount(data));
     } else {
       dispatch(login(data));
     }

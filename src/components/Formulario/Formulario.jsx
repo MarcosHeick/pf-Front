@@ -5,7 +5,7 @@ import { formularioDeCreacion, getProducts } from "../../redux/action";
 import { Link, useNavigate } from "react-router-dom";
 import NavBar from "../NavBar/NavBar";
 import style from "./Formulario.module.css";
-import Error401 from "../Error401/Error401.jsx"
+
 import swal from "sweetalert";
 import "../../App.css";
 import axios from "axios";
@@ -19,8 +19,7 @@ const Formulario = () => {
   const [creacion, setCreacion] = useState("inicial");
 
   const productsAll = useSelector((state) => state.productsAll);
-  const user = useSelector((state) => state.user);
-  console.log(user,"holaaaaa")
+
   useEffect(() => {
     dispatch(getProducts());
   }, [dispatch]);
@@ -283,7 +282,6 @@ const Formulario = () => {
   };
 
   return (
-    user.role === "admin"? 
     <div className="bg-white">
       <NavBar />
       <h2 className={style.title}>Cargar Producto</h2>
@@ -597,9 +595,7 @@ const Formulario = () => {
         </div>
       </div>
     </div>
-    :  <Error401></Error401>
   );
-  
 };
 
 export default Formulario;

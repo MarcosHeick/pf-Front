@@ -4,7 +4,7 @@ import style from "./Order.module.css";
 import NavBar from "../NavBar/NavBar";
 import { useSelector } from "react-redux";
 import axios from "axios";
-import swal from "sweetalert"
+
 
 
 export default function Order() {
@@ -54,17 +54,12 @@ export default function Order() {
     }
     console.log(orderData);
     async function handlePay(e) {
-        if(dataUser.role !== "inactive" && dataUser.role !==undefined   ){
         const mp = await axios.post(`https://velvet.up.railway.app/payment`, orderData)
         console.log(mp);
         console.log(mp.data);
         setPago(mp.data)
-        setCambiar(true)}
-        else{
-          return  swal({
-                title: "Debe loguearse primero o todavia debe verificar su mail!",
-                icon: "error"})
-        }
+        setCambiar(true)
+
     }
 
 
@@ -90,7 +85,7 @@ export default function Order() {
         // let a = "217b2537-b8aa-4dea-89b1-a7f095c0e700";
 
         e.preventDefault()
-        const crearorder = await axios.post(`https://velvet.up.railway.app/users/cart/${user_id}`, {
+        const crearorder = await axios.post(`http://localhost:3001/users/cart/${user_id}`, {
             firstName: input.firstName,
             lastName: input.lastName,
             email: input.email,   //cambiar aca por el que tiene el user en localstorage
@@ -140,30 +135,30 @@ export default function Order() {
 
                 <form className={style.tagFrom} onSubmit={handleUpdate}>
 
-                    <label>Nombre</label>
+                    <label>first name:</label>
                     <input type="text" name="firstName" autoComplete="on" value={input.firstName} onChange={e => handleChange(e)} />
 
-                    <label>Apellido</label>
+                    <label>last name:</label>
                     <input type="text" name="lastName" autoComplete="on" value={input.lastName} onChange={e => handleChange(e)} />
 
-                    <label>E-mail:</label>
+                    <label>e-mail:</label>
                     <input type="text" name="email" autoComplete="off" value={input.email} onChange={e => handleChange(e)} />
 
-                    <label>Numero de telefono:</label>
+                    <label>phone number:</label>
                     <input type="text" name="phoneNumber" autoComplete="off" value={input.phoneNumber} onChange={e => handleChange(e)} />
 
-                    <label>Direccion:</label> {/* calles?? */}
+                    <label>direction:</label> {/* calles?? */}
                     <input type="text" name="direction" autoComplete="off" value={input.direction} onChange={e => handleChange(e)} />
 
-                    <label>Numero:</label>{/* numero de calle?? */}
+                    <label>num address:</label>{/* numero de calle?? */}
                     <input type="text" name="numAddress" placeholder="" value={input.numAddress} onChange={e => handleChange(e)} />
 
-                    <label>Piso/Departamento:</label>
+                    <label>floor/department:</label>
                     <input type="text" name="department" placeholder="" value={input.department} onChange={e => handleChange(e)} />
 
 
 
-                    <label>Codigo Postal:</label>
+                    <label>postal code:</label>
                     <input type="text" name="postalCode" placeholder="" value={input.postalCode} onChange={e => handleChange(e)} />
 
 

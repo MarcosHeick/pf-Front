@@ -11,26 +11,59 @@ import { Carousel } from "flowbite-react";
 import { filterByCategorys } from "../../redux/action";
 import { IoIosArrowDropright, IoIosArrowDropleft } from "react-icons/io";
 import { findRenderedComponentWithType } from "react-dom/test-utils";
+import { Hearts } from "react-loading-icons";
 
 export default function Landing() {
   const dispatch = useDispatch();
   const navegation = useNavigate();
   const productsAll = useSelector((state) => state.productsAll);
+  const productsFilters = productsAll.filter(
+    (element) => element.value === true
+  );
   const productsBuy = productsAll.filter(
     (element) => element.bestSellers === true
   );
-  const [valueFilters, setValueFilters] = useState("");
 
-  function handelFinters() {
+  function handelFintersH() {
     navegation("/home");
     setTimeout(function () {
-      dispatch(filterByCategorys(valueFilters));
-    }, 500);
+      dispatch(filterByCategorys("hombre"));
+    }, 2000);
   }
+  function handelFintersM() {
+    navegation("/home");
+    setTimeout(function () {
+      dispatch(filterByCategorys("mujer"));
+    }, 2000);
+  }
+  function handelFintersN() {
+    navegation("/home");
+    setTimeout(function () {
+      dispatch(filterByCategorys("niños"));
+    }, 2000);
+  }
+  function handelFintersV() {
+    navegation("/home");
+    setTimeout(function () {
+      dispatch(filterByCategorys("varios"));
+    }, 2000);
+  }
+  const [state, setState] = useState(true);
   useEffect(() => {
-    dispatch(getProducts());
+    dispatch(getProducts()).then(() => setState(false));
   }, [dispatch]);
-
+  if (state) {
+    return (
+      <div className={style.cargando}>
+        <div>
+          <Hearts fill="#ea047e" stroke="#ea047e" />
+        </div>
+        <div>
+          <p>Cargando...</p>
+        </div>
+      </div>
+    );
+  }
   return (
     <div>
       <div className={style.content}>
@@ -110,9 +143,8 @@ export default function Landing() {
             <div className="flex items-center justify-center">
               <div
                 className={style.categotiImportant}
-                onClick={() => {
-                  setValueFilters("hombre");
-                  handelFinters();
+                onClick={(e) => {
+                  handelFintersH(e);
                 }}
               >
                 <h4>Hombre</h4>
@@ -125,8 +157,7 @@ export default function Landing() {
                 <div
                   className={style.card}
                   onClick={() => {
-                    setValueFilters("mujer");
-                    handelFinters();
+                    handelFintersM();
                   }}
                 >
                   <h4>Mujer</h4>
@@ -138,8 +169,7 @@ export default function Landing() {
                 <div
                   className={style.card}
                   onClick={() => {
-                    setValueFilters("niños");
-                    handelFinters();
+                    handelFintersN();
                   }}
                 >
                   <h4>Niños</h4>
@@ -151,8 +181,7 @@ export default function Landing() {
                 <div
                   className={style.card}
                   onClick={() => {
-                    setValueFilters("varios");
-                    handelFinters();
+                    handelFintersV();
                   }}
                 >
                   <h4>Varios</h4>
