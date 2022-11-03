@@ -84,7 +84,7 @@ export default function Card({ name, image, price, id, sizes, categories }) {
                   return <p key={e}>{e}</p>;
                 })}
             </div>
-            <h6>$USD {price}</h6>
+            <h6>$ARS {price}</h6>
           </div>
         </NavLink>
       </div>

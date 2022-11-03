@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import NavBar from "../NavBar/NavBar";
 import { NavLink } from "react-router-dom";
 import style from "./Sidebar.module.css";
+import Error401 from "../Error401/Error401";
+
 import {
   getUser,
   putUser,
@@ -93,6 +95,7 @@ const Sidebar = () => {
   console.log(users, "imagen");
 
   return (
+    user.role==="admin"?
     <div className="bg-white">
       <NavBar />
       <div className={style.content}>
@@ -325,6 +328,7 @@ const Sidebar = () => {
         </div>
       </div>
     </div>
+    :<Error401></Error401>
   );
 };
 

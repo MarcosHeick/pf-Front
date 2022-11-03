@@ -203,18 +203,17 @@ export function postImages() {
 
 //-------------LOGIN------------------//
 export function login(payload) {
-  console.log(payload, "loginnnnn");
-  console.log(payload.googleId);
+ // console.log(payload, "loginnnnn");
+ // console.log(payload.googleId);
   if (!payload.googleId) {
     return async function (dispatch) {
       const user = await axios.post(
         "https://velvet.up.railway.app/login",
         payload
       );
-      console.log(user, "hola");
-      // console.log("login respuesta", respuesta.data);
+      console.log(user.data,"holaaaaaaaaa")
       if (user.data[1]) {
-        localStorage.setItem("token", user.data);
+        localStorage.setItem("token",user.data[1]);
         // Para logout localStorage.removeItem("token");
       }
 
