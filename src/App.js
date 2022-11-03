@@ -15,6 +15,7 @@ import Sidebar from "./components/Sidebar/Sidebar";
 import EditProducts from "./components/EditProducts/EditProducts";
 import Order from "./components/Orders/Order";
 import ControlOrders from "./components/Orders/ControlOrders";
+import { Error404 } from "./components/Error404/Error404";
 
 // import Error401 from "./components/Error401/Error401";
 
@@ -47,6 +48,8 @@ function App() {
           path="/ControlOrders"
           element={<ControlOrders></ControlOrders>}
         />
+          <Route path="*" element={<Error404></Error404>}></Route>
+
       </Routes>
     </div>
   );
