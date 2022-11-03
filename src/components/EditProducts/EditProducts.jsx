@@ -9,6 +9,7 @@ import NavBar from "../NavBar/NavBar";
 import { IoReload } from "react-icons/io5";
 import swal from "sweetalert";
 import axios from "axios";
+import Error401 from "../Error401/Error401";
 import { Hearts } from "react-loading-icons";
 
 export default function EditProducts() {
@@ -16,7 +17,7 @@ export default function EditProducts() {
   const { id } = useParams();
   const product = useSelector((state) => state.detailProduct);
   const [state, setState] = useState(true);
-
+  const user = useSelector((state) => state.user);
   useEffect(() => {
     dispatch(getDetail(id)).then(() => setState(false));
     return () => {
@@ -250,6 +251,7 @@ export default function EditProducts() {
     );
   }
   return (
+    user.role==="admin"?
     <div className="bg-white">
       <NavBar />
       <div className={style.content}>
@@ -404,5 +406,7 @@ export default function EditProducts() {
         </div>
       </div>
     </div>
+    :
+    <Error401></Error401>
   );
 }

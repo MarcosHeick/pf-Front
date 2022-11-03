@@ -12,13 +12,14 @@ import axios from "axios";
 import { MdOutlineShoppingCart } from "react-icons/md";
 import { AiFillHeart } from "react-icons/ai";
 import { AiOutlineHeart } from "react-icons/ai";
-
+import Error401 from "../Error401/Error401";
 const Formulario = () => {
   const dispatch = useDispatch();
 
   const [creacion, setCreacion] = useState("inicial");
 
   const productsAll = useSelector((state) => state.productsAll);
+  const user = useSelector((state) => state.user);
 
   useEffect(() => {
     dispatch(getProducts());
@@ -282,6 +283,7 @@ const Formulario = () => {
   };
 
   return (
+    user.role==="admin"?
     <div className="bg-white">
       <NavBar />
       <h2 className={style.title}>Cargar Producto</h2>
@@ -595,6 +597,7 @@ const Formulario = () => {
         </div>
       </div>
     </div>
+    :<Error401></Error401>
   );
 };
 

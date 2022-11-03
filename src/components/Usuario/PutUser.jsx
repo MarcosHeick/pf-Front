@@ -21,7 +21,7 @@ import FavoriteList from "../FavoriteList/FavoriteList";
 import OrderList from "../OrderList/OrderList";
 import OrderCard from "../OrderCard/OrderCard";
 import axios from "axios";
-
+import Error401 from "../Error401/Error401";
 const PutUser = () => {
   const dispatch = useDispatch();
   let params = useParams();
@@ -129,6 +129,7 @@ const PutUser = () => {
   const { email, id, phoneNumber, userName, image } = user;
 
   return (
+    user.role?
     <div className="bg-white">
       <NavBar />
 
@@ -301,6 +302,8 @@ const PutUser = () => {
         </div>
       </div>
     </div>
+      :
+      <Error401></Error401>
   );
 };
 

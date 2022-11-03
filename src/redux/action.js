@@ -239,7 +239,7 @@ export function login(payload) {
             email: user.data[0].email,
             id: user.data[0].id,
             userName: user.data[0].userName,
-            Token: user.data[1].token,
+            token: user.data[1].token,
             image: user.data[0].image,
           },
         });
@@ -255,7 +255,7 @@ export function login(payload) {
           email: user.data[0].email,
           id: user.data[0].id,
           userName: user.data[0].userName,
-          Token: user.data[1].token,
+          token: user.data[1].token,
           image: user.data[0].image,
         },
       });
@@ -291,7 +291,7 @@ export function login(payload) {
             email: user.data[0].email,
             id: user.data[0].id,
             userName: user.data[0].userName,
-            Token: user.data[1].token,
+            token: user.data[1].token,
             image: user.data[0].image,
           },
         });
@@ -307,7 +307,7 @@ export function login(payload) {
           email: user.data[0].email,
           id: user.data[0].id,
           userName: user.data[0].userName,
-          Token: user.data[1].token,
+          token: user.data[1].token,
           image: user.data[0].image,
         },
       });
@@ -348,7 +348,7 @@ export function creatAcount(payload) {
           email: user.data[0].email,
           id: user.data[0].id,
           userName: user.data[0].userName,
-          Token: user.data[1].token,
+          token: user.data[1].token,
           image: user.data[0].image,
         },
       });
@@ -364,7 +364,7 @@ export function creatAcount(payload) {
         email: user.data[0].email,
         id: user.data[0].id,
         userName: user.data[0].userName,
-        Token: user.data[1].token,
+        token: user.data[1].token,
         image: user.data[0].image,
       },
     });
