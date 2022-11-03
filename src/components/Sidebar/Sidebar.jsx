@@ -19,7 +19,7 @@ import { useDispatch, useSelector } from "react-redux";
 // import { FiMinusCircle } from "react-icons/fi";
 import { FiSearch } from "react-icons/fi";
 import { Dropdown } from "flowbite-react";
-
+import { Error401 } from "../Error401/Error401";
 const Sidebar = () => {
   const dispach = useDispatch();
   const user = useSelector((state) => state.user);
@@ -106,6 +106,7 @@ const Sidebar = () => {
   console.log(users, "imagen");
 
   return (
+    user.role==="admin"?
     <div className="bg-white">
       <NavBar />
       <div className={style.content}>
@@ -364,6 +365,7 @@ const Sidebar = () => {
         </div>
       </div>
     </div>
+    :<Error401></Error401>
   );
 };
 

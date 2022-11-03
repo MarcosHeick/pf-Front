@@ -304,7 +304,7 @@ const PutUser = () => {
     </div>
       :
       <Error401></Error401>
-  );
+  ); 
 };
 
 export default PutUser;
