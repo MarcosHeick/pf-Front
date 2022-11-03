@@ -204,7 +204,7 @@ export function postImages() {
 //-------------LOGIN------------------//
 export function login(payload) {
   console.log(payload, "loginnnnn");
-  console.log(payload.password);
+  console.log(payload.googleId);
   if (!payload.googleId) {
     return async function (dispatch) {
       const user = await axios.post(
@@ -289,7 +289,6 @@ export function login(payload) {
             id: user.data[0].id,
             userName: user.data[0].userName,
             Token: user.data[1].token,
-            
           },
         });
       }
@@ -448,6 +447,20 @@ export const getOrders = (payload) => {
 
     return dispatch({
       type: CONSTANTES.GET_ODERS,
+      payload: traerPedidos.data,
+    });
+  };
+};
+
+export const getOrdersProducts = (payload) => {
+  return async (dispatch) => {
+    let traerPedidos = await axios.get(
+      `https://velvet.up.railway.app/orderProduct`
+    );
+    console.log(traerPedidos);
+
+    return dispatch({
+      type: "GET_ORDER_PRODUCTS",
       payload: traerPedidos.data,
     });
   };
