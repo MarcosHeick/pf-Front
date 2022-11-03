@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import NavBar from "../NavBar/NavBar";
 import { NavLink } from "react-router-dom";
 import style from "./Sidebar.module.css";
-import Error401 from "../Error401/Error401";
-
 import {
   getUser,
   putUser,
@@ -51,8 +49,25 @@ const Sidebar = () => {
   const [search, setSearch] = useState("");
   const dispatch = useDispatch();
 
+  function handelBanProduct(id) {
+    dispach(putProduct({ value: "false" }, id));
+    setTimeout(function () {
+      window.location.reload(true);
+    }, 1000);
+  }
+
+  function handelDesBanProduct(id) {
+    dispach(putProduct({ value: "true" }, id));
+    setTimeout(function () {
+      window.location.reload(true);
+    }, 1000);
+  }
+
   function handelBan(id) {
     dispatch(putUser(id, { role: "inactive" }));
+    setTimeout(function () {
+      window.location.reload(true);
+    }, 1000);
   }
 
   function searchUser(e) {
@@ -88,14 +103,9 @@ const Sidebar = () => {
     setToggleState(index);
   };
 
-  function handelBan(id) {
-    dispach(putProduct({ value: false }, id));
-  }
-
   console.log(users, "imagen");
 
   return (
-    user.role==="admin"?
     <div className="bg-white">
       <NavBar />
       <div className={style.content}>
@@ -210,7 +220,13 @@ const Sidebar = () => {
           {allProducts &&
             allProducts.map((element) => {
               return (
-                <div className={style.contentProducts}>
+                <div
+                  className={
+                    element.value === true
+                      ? style.contentProducts
+                      : style.contentProductsDes
+                  }
+                >
                   <p>
                     <b>Nombre de producto:</b> {element.name}
                   </p>
@@ -221,12 +237,32 @@ const Sidebar = () => {
                   <p>
                     <b>Id:</b> {element.id}
                   </p>
+                  <p>
+                    <b>Actividad:</b>{" "}
+                    {element.value === true ? "Activo" : "Deshabilitado"}
+                  </p>
+
                   <NavLink
                     // className="bg-red-700 text-white  py-2 px-2 rounded-3xl rounded-3xl"
-                    onClick={() => handelBan(element.id)}
-                    className={style.butonsCards}
+                    onClick={() => handelBanProduct(element.id)}
+                    className={
+                      element.value === true
+                        ? style.butonsCards
+                        : style.butonsCardsDes
+                    }
                   >
                     Deshabilitar
+                  </NavLink>
+                  <NavLink
+                    // className="bg-red-700 text-white  py-2 px-2 rounded-3xl rounded-3xl"
+                    onClick={() => handelDesBanProduct(element.id)}
+                    className={
+                      element.value === false
+                        ? style.butonsCards
+                        : style.butonsCardsDes
+                    }
+                  >
+                    Habilitar
                   </NavLink>
 
                   <NavLink
@@ -328,7 +364,6 @@ const Sidebar = () => {
         </div>
       </div>
     </div>
-    :<Error401></Error401>
   );
 };
 

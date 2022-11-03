@@ -5,7 +5,7 @@ import { Route, Routes } from "react-router-dom";
 import Landing from "./components/Landing/Landing";
 import Formulario from "./components/Formulario/Formulario";
 import CartView from "./components/CartView/CartView";
-
+import Pagos from "../src/components/Pagos/Pagos";
 import PutUser from "./components/Usuario/PutUser";
 import Review from "./components/Review/Review";
 import Reviews from "./components/Review/Reviews";
@@ -15,10 +15,8 @@ import Sidebar from "./components/Sidebar/Sidebar";
 import EditProducts from "./components/EditProducts/EditProducts";
 import Order from "./components/Orders/Order";
 import ControlOrders from "./components/Orders/ControlOrders";
-import { Error404 } from "./components/Error404/Error404";
 
 // import Error401 from "./components/Error401/Error401";
-
 
 function App() {
   return (
@@ -42,12 +40,13 @@ function App() {
         <Route path="/admin" element={<Sidebar />} />
         <Route path="/editProduct/:id" element={<EditProducts />} />
 
+        <Route path="/pagos" element={<Pagos></Pagos>} />
 
         <Route path="/Order" element={<Order></Order>} />
-        <Route path="/ControlOrders/:id" element={<ControlOrders></ControlOrders>} />
-        <Route path="*" element={<Error404></Error404>}></Route>
-
-
+        <Route
+          path="/ControlOrders"
+          element={<ControlOrders></ControlOrders>}
+        />
       </Routes>
     </div>
   );

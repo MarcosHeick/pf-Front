@@ -2,8 +2,6 @@ import axios from "axios";
 import { MdArrowBackIos } from "react-icons/md";
 import swal from "sweetalert";
 import { CONSTANTES } from "./constantes";
-import { initialState } from "./reducer";
-console.log(initialState.user.token,"useeerr")
 
 const datosdeploy = "https://velvet.up.railway.app/product";
 export function getProducts() {
@@ -31,6 +29,7 @@ export function getDetail(id) {
   };
 }
 export function putProduct(payload, id) {
+  console.log(payload, id, "datos de ban");
   return async function (dispatch) {
     let respuesta = await axios.put(
       `https://velvet.up.railway.app/product/${id}`,
@@ -92,11 +91,8 @@ export function filterType(payload) {
 export const formularioDeCreacion = async (payload) => {
   try {
     let crearProduct = await axios.post(
-      "https://velvet.up.railway.app/product",  
-      payload,  {
-        headers: {
-        authorization : `Bearer ${initialState.user.token}`
-        }}
+      "https://velvet.up.railway.app/product",
+      payload
     );
     console.log(crearProduct);
     return {
@@ -208,20 +204,21 @@ export function postImages() {
 
 //-------------LOGIN------------------//
 export function login(payload) {
- // console.log(payload, "loginnnnn");
- // console.log(payload.googleId);
+  console.log(payload, "loginnnnn");
+  console.log(payload.googleId);
   if (!payload.googleId) {
     return async function (dispatch) {
       const user = await axios.post(
         "https://velvet.up.railway.app/login",
         payload
       );
-      console.log(user.data,"holaaaaaaaaa")
+      console.log(user, "hola");
+      // console.log("login respuesta", respuesta.data);
       if (user.data[1]) {
-        localStorage.setItem("user",user.data[1]);
+        localStorage.setItem("token", user.data);
         // Para logout localStorage.removeItem("token");
       }
-      let ff=user.data[1]
+
       if (user.data.hasOwnProperty("menssage")) {
         return swal({
           title: "Usuario y/o password son incorrectos",
@@ -242,7 +239,8 @@ export function login(payload) {
             email: user.data[0].email,
             id: user.data[0].id,
             userName: user.data[0].userName,
-            token:ff,
+            Token: user.data[1].token,
+            image: user.data[0].image,
           },
         });
       }
@@ -257,7 +255,8 @@ export function login(payload) {
           email: user.data[0].email,
           id: user.data[0].id,
           userName: user.data[0].userName,
-          token:ff,
+          Token: user.data[1].token,
+          image: user.data[0].image,
         },
       });
     };
@@ -267,9 +266,8 @@ export function login(payload) {
         "https://velvet.up.railway.app/users",
         payload
       );
-      //console.log(user.data,"acaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
       if (user.data[1]) {
-        localStorage.setItem("user", user.data);
+        localStorage.setItem("token", user.data);
         // Para logout localStorage.removeItem("token");
       }
 
@@ -279,38 +277,38 @@ export function login(payload) {
           icon: "error",
         });
       }
-      // if (user.data[0].role == "admin") {
-      //   // console.log(user[0], "users admin");
+      if (user.data[0].role == "admin") {
+        // console.log(user[0], "users admin");
 
-      //   swal({
-      //     title: "Bienvenido ADMIN",
-      //     icon: "success",
-      //   });
-      //   return dispatch({
-      //     type: "LOGIN",
-      //     payload: {
-      //       role: user.data[0].role,
-      //       email: user.data[0].email,
-      //       id: user.data[0].id,
-      //       userName: user.data[0].userName,
-      //       token:ff,
-      //     },
-      //   });
-      // }
-      // swal({
-      //   title: "Ingreasaste correctamente",
-      //   icon: "success",
-      // });
-      let asd= user.data[0]
-      let ff=user.data[1]
+        swal({
+          title: "Bienvenido ADMIN",
+          icon: "success",
+        });
+        return dispatch({
+          type: "LOGIN",
+          payload: {
+            role: user.data[0].role,
+            email: user.data[0].email,
+            id: user.data[0].id,
+            userName: user.data[0].userName,
+            Token: user.data[1].token,
+            image: user.data[0].image,
+          },
+        });
+      }
+      swal({
+        title: "Ingreasaste correctamente",
+        icon: "success",
+      });
       return dispatch({
         type: "LOGIN",
         payload: {
           role: user.data[0].role,
-            email: user.data[0].email,
-            id: user.data[0].id,
-            userName: user.data[0].userName,
-          token: ff
+          email: user.data[0].email,
+          id: user.data[0].id,
+          userName: user.data[0].userName,
+          Token: user.data[1].token,
+          image: user.data[0].image,
         },
       });
     };
@@ -351,6 +349,7 @@ export function creatAcount(payload) {
           id: user.data[0].id,
           userName: user.data[0].userName,
           Token: user.data[1].token,
+          image: user.data[0].image,
         },
       });
     }
@@ -366,6 +365,7 @@ export function creatAcount(payload) {
         id: user.data[0].id,
         userName: user.data[0].userName,
         Token: user.data[1].token,
+        image: user.data[0].image,
       },
     });
   };
@@ -393,7 +393,7 @@ export const putUser = (id, payload) => {
       `https://velvet.up.railway.app/users/${id}`,
       payload
     );
-    console.log("esto es el put", json);
+    console.log("esto es el put", json.data);
     return dispatch({
       type: CONSTANTES.PUT_USER,
       payload: json.data,
